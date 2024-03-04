@@ -1,8 +1,5 @@
 package com.eisdemo.Sampleeis.Services;
-
-
-import com.eisdemo.Sampleeis.Repository.ExecutionRepository;
-import com.eisdemo.Sampleeis.models.Execution;
+import com.eisdemo.Sampleeis.Repository.BatchJobExecutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +7,17 @@ import java.util.List;
 
 @Service
 public class ExecutionService {
-    private final ExecutionRepository executionRepository;
+    private final BatchJobExecutionRepository batchJobExecutionRepository;
 
     @Autowired
-    public ExecutionService(ExecutionRepository executionRepository) {
-        this.executionRepository = executionRepository;
+    public ExecutionService(BatchJobExecutionRepository batchJobExecutionRepository) {
+        this.batchJobExecutionRepository = batchJobExecutionRepository;
     }
 
-    public List<Execution> getAllExecutions() {
-        return executionRepository.findAll();
+    public List<Object[]> getBatchJobData() {
+        return batchJobExecutionRepository.getBatchJobData("financeImportJob");
     }
+
+
+
 }
