@@ -11,8 +11,6 @@ import lombok.Setter;
 public class BatchJobInstance {
     @Id
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "JOB_INSTANCE_ID")
 
     private Integer JOB_INSTANCE_ID;

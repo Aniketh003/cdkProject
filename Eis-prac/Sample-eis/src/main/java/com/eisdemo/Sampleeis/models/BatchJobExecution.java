@@ -14,8 +14,6 @@ public class BatchJobExecution {
 
     @Id
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //for setting primary key
-
     @Column(name = "JOB_EXECUTION_ID")
 
     private Integer Job_Execution_Id;

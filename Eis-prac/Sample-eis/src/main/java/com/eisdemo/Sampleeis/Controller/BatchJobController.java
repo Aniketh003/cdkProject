@@ -1,15 +1,15 @@
 package com.eisdemo.Sampleeis.Controller;
 
 import com.eisdemo.Sampleeis.Services.ExecutionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.eisdemo.Sampleeis.models.ResponseModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:5173/")
 @RequestMapping("/batch-jobs")
 public class BatchJobController {
     private final ExecutionService executionService;
@@ -19,8 +19,20 @@ public class BatchJobController {
     }
 
     @GetMapping("/data")
-    public ResponseEntity<List<Object[]>> getBatchJobData() {
-        List<Object[]> data = executionService.getBatchJobData();
+    public ResponseEntity<List<ResponseModel>> getBatchJobData(@RequestParam String jobName) {
+        List<ResponseModel> data = executionService.getBatchJobData(jobName);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/import-jobs")
+    public ResponseEntity<List<ResponseModel>> getImportJObs(){
+        List<ResponseModel> data = executionService.getImportJobs();
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/core-jobs")
+    public ResponseEntity<List<ResponseModel>> getCoreJObs(){
+        List<ResponseModel> data = executionService.getCoreJobs();
         return ResponseEntity.ok(data);
     }
 }
