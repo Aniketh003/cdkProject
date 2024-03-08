@@ -5,8 +5,8 @@ import com.eisdemo.Sampleeis.models.ResponseModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:5173/")
@@ -21,6 +21,12 @@ public class BatchJobController {
     @GetMapping("/data")
     public ResponseEntity<List<ResponseModel>> getBatchJobData(@RequestParam String jobName) {
         List<ResponseModel> data = executionService.getBatchJobData(jobName);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/getJob")
+    public ResponseEntity<Optional<ResponseModel>> getBatchJobData(@RequestParam String jobName, @RequestParam String date) {
+        Optional<ResponseModel> data = executionService.getBatchByDate(jobName,date);
         return ResponseEntity.ok(data);
     }
 

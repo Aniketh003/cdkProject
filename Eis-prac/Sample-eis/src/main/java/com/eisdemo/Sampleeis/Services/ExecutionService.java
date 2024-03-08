@@ -4,8 +4,8 @@ import com.eisdemo.Sampleeis.models.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExecutionService {
@@ -19,13 +19,20 @@ public class ExecutionService {
         return batchJobExecutionRepository.getBatchJobData(jobName);
     }
 
+    public Optional<ResponseModel> getBatchByDate(String jobName, String date){
+        LocalDate localDate = LocalDate.parse(date);
+        return batchJobExecutionRepository.getBatchJobDataByDate(jobName,localDate);
+    }
+
     public List<ResponseModel> getImportJobs() {
         LocalDate date = LocalDate.parse("2024-01-23");
+        LocalDate today = LocalDate.now();
         return batchJobExecutionRepository.getImportBatchJobData(date);
     }
 
     public List<ResponseModel> getCoreJobs() {
         LocalDate date = LocalDate.parse("2024-01-23");
+        LocalDate today = LocalDate.now();
         return batchJobExecutionRepository.getCoreBatchJobData(date);
     }
 }

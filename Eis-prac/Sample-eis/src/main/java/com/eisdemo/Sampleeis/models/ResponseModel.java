@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseModel {
-    private Integer JOB_INSTANCE_ID;
     private String JOB_NAME;
     private String Start_Time;
     private String End_Time;
