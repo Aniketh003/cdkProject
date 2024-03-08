@@ -28,6 +28,7 @@ public class BatchJobController {
     public ResponseEntity<Optional<ResponseModel>> getBatchJobData(@RequestParam String jobName, @RequestParam String date) {
         Optional<ResponseModel> data = executionService.getBatchByDate(jobName,date);
         return ResponseEntity.ok(data);
+
     }
 
     @GetMapping("/import-jobs")
