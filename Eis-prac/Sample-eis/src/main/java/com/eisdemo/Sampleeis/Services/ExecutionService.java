@@ -19,7 +19,7 @@ public class ExecutionService {
         return batchJobExecutionRepository.getBatchJobData(jobName);
     }
 
-    public Optional<ResponseModel> getBatchByDate(String jobName, String date){
+    public Optional<List<ResponseModel>> getBatchByDate(String jobName, String date){
         LocalDate localDate = LocalDate.parse(date);
         return batchJobExecutionRepository.getBatchJobDataByDate(jobName,localDate);
     }
@@ -27,12 +27,12 @@ public class ExecutionService {
     public List<ResponseModel> getImportJobs() {
         LocalDate date = LocalDate.parse("2024-01-23");
         LocalDate today = LocalDate.now();
-        return batchJobExecutionRepository.getImportBatchJobData(date);
+        return batchJobExecutionRepository.getLatestImportBatchJobData(date);
     }
 
     public List<ResponseModel> getCoreJobs() {
         LocalDate date = LocalDate.parse("2024-01-23");
         LocalDate today = LocalDate.now();
-        return batchJobExecutionRepository.getCoreBatchJobData(date);
+        return batchJobExecutionRepository.getLatestCoreBatchJobData(date);
     }
 }

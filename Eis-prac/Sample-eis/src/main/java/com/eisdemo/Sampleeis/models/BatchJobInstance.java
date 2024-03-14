@@ -10,22 +10,15 @@ import lombok.Setter;
 @Table(name = "ent_feed_app_batch_job_instance")
 public class BatchJobInstance {
     @Id
-
     @Column(name = "JOB_INSTANCE_ID")
-
     private Integer JOB_INSTANCE_ID;
 
     @Column(name = "VERSION")
-
     private Integer VERSION;
 
-
     @Column(name = "JOB_NAME")
-
     private String JOB_NAME;
 
     @Column(name = "JOB_KEY")
-
     private String JOB_KEY;
-
 }
