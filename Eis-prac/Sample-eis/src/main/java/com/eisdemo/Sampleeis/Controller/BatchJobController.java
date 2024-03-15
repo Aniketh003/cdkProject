@@ -1,10 +1,12 @@
 package com.eisdemo.Sampleeis.Controller;
 
 import com.eisdemo.Sampleeis.Services.ExecutionService;
+import com.eisdemo.Sampleeis.models.BatchJobExecution;
 import com.eisdemo.Sampleeis.models.ResponseModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,4 +44,12 @@ public class BatchJobController {
         List<ResponseModel> data = executionService.getCoreJobs();
         return ResponseEntity.ok(data);
     }
+
+    @PostMapping("/rerun")
+    public String rerunJobs(@RequestParam String exeId) {
+        String res = executionService.getJobByExecution(exeId);
+        return res;
+    }
+
+
 }

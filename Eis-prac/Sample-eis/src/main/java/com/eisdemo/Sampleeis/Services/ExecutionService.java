@@ -1,10 +1,16 @@
 package com.eisdemo.Sampleeis.Services;
 import com.eisdemo.Sampleeis.Repository.BatchJobExecutionRepository;
+import com.eisdemo.Sampleeis.models.BatchJobExecution;
 import com.eisdemo.Sampleeis.models.ResponseModel;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -15,13 +21,14 @@ public class ExecutionService {
     public ExecutionService(BatchJobExecutionRepository batchJobExecutionRepository) {
         this.batchJobExecutionRepository = batchJobExecutionRepository;
     }
+
     public List<ResponseModel> getBatchJobData(String jobName) {
         return batchJobExecutionRepository.getBatchJobData(jobName);
     }
 
-    public Optional<List<ResponseModel>> getBatchByDate(String jobName, String date){
+    public Optional<List<ResponseModel>> getBatchByDate(String jobName, String date) {
         LocalDate localDate = LocalDate.parse(date);
-        return batchJobExecutionRepository.getBatchJobDataByDate(jobName,localDate);
+        return batchJobExecutionRepository.getBatchJobDataByDate(jobName, localDate);
     }
 
     public List<ResponseModel> getImportJobs() {
@@ -35,4 +42,29 @@ public class ExecutionService {
         LocalDate today = LocalDate.now();
         return batchJobExecutionRepository.getLatestCoreBatchJobData(date);
     }
+
+
+    @Transactional
+    public String getJobByExecution(String exeId) {
+        BatchJobExecution responseModel = batchJobExecutionRepository.findJobByExecutionId(exeId);
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if (Objects.equals(responseModel.getStatus(), "FAILED")) {
+            responseModel.setCreate_Time(date.format(dateTimeFormatter));
+            responseModel.setEnd_Time("");
+            responseModel.setStart_Time("");
+            responseModel.setExit_Code("RUNNING");
+            responseModel.setStatus("RUNNING");
+            return "Running";
+        } else if (Objects.equals(responseModel.getStatus(), "UNKNOWN")) {
+            responseModel.setCreate_Time(date.format(dateTimeFormatter));
+            responseModel.setEnd_Time("");
+            responseModel.setStart_Time("");
+            responseModel.setExit_Code("RUNNING");
+            responseModel.setStatus("RUNNING");
+            return "Running";
+        }
+        return "Already Running";
+    }
+
 }

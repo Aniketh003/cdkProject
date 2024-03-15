@@ -39,4 +39,9 @@ public interface BatchJobExecutionRepository extends JpaRepository<BatchJobExecu
             "WHERE i.JOB_NAME IN ('upSertEnterprisesJob','generateDepartmentsJob', 'storeUpdateJob','generateStoresJob') " +
             "AND DATE(e.Start_Time) = :today ")
     List<ResponseModel> getLatestCoreBatchJobData(@Param("today") LocalDate yesterday);
+    @Query("SELECT e FROM BatchJobExecution e WHERE e.Job_Execution_Id = :exeId")
+    BatchJobExecution findJobByExecutionId(@Param("exeId") String exeId);
+
+
+
 }
