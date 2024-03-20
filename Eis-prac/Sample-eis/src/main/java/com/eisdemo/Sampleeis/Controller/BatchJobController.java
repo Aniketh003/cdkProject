@@ -2,7 +2,10 @@ package com.eisdemo.Sampleeis.Controller;
 
 import com.eisdemo.Sampleeis.Services.ExecutionService;
 import com.eisdemo.Sampleeis.models.BatchJobExecution;
+import com.eisdemo.Sampleeis.models.PageResponseModel;
 import com.eisdemo.Sampleeis.models.ResponseModel;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +23,6 @@ public class BatchJobController {
         this.executionService = executionService;
     }
 
-    @GetMapping("/data")
-    public ResponseEntity<List<ResponseModel>> getBatchJobData(@RequestParam String jobName) {
-        List<ResponseModel> data = executionService.getBatchJobData(jobName);
-        return ResponseEntity.ok(data);
-    }
 
     @GetMapping("/getJob")
     public ResponseEntity<Optional<List<ResponseModel>>> getBatchJobData(@RequestParam String jobName, @RequestParam String date) {
@@ -49,6 +47,15 @@ public class BatchJobController {
     public String rerunJobs(@RequestParam String exeId) {
         String res = executionService.getJobByExecution(exeId);
         return res;
+    }
+
+
+    @GetMapping("pagination")
+    public ResponseEntity<PageResponseModel> getBatchJobDataByPagination(@RequestParam String jobName,
+                                                                         @RequestParam(defaultValue = "0") int page,
+                                                                         @RequestParam(defaultValue = "7") int size) {
+        PageResponseModel pageResponse = executionService.getBatchJobDataByPagination(jobName, page, size);
+        return ResponseEntity.ok(pageResponse);
     }
 
 

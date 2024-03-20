@@ -1,9 +1,14 @@
 package com.eisdemo.Sampleeis.Services;
 import com.eisdemo.Sampleeis.Repository.BatchJobExecutionRepository;
 import com.eisdemo.Sampleeis.models.BatchJobExecution;
+import com.eisdemo.Sampleeis.models.PageResponseModel;
 import com.eisdemo.Sampleeis.models.ResponseModel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,8 +27,9 @@ public class ExecutionService {
         this.batchJobExecutionRepository = batchJobExecutionRepository;
     }
 
-    public List<ResponseModel> getBatchJobData(String jobName) {
-        return batchJobExecutionRepository.getBatchJobData(jobName);
+    public Page<ResponseModel> getBatchJobData( String jobName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return batchJobExecutionRepository.getBatchJobData(jobName, pageable);
     }
 
     public Optional<List<ResponseModel>> getBatchByDate(String jobName, String date) {
@@ -42,6 +48,7 @@ public class ExecutionService {
         LocalDate today = LocalDate.now();
         return batchJobExecutionRepository.getLatestCoreBatchJobData(date);
     }
+
 
 
     @Transactional
@@ -66,5 +73,13 @@ public class ExecutionService {
         }
         return "Already Running";
     }
+
+    public PageResponseModel getBatchJobDataByPagination(String jobName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ResponseModel> pageResponse = batchJobExecutionRepository.getBatchJobData(jobName, pageable);
+        return new PageResponseModel(pageResponse.getContent(), pageResponse.getNumber(), pageResponse.getSize(),
+                pageResponse.getTotalPages(), pageResponse.getTotalElements());
+    }
+
 
 }
