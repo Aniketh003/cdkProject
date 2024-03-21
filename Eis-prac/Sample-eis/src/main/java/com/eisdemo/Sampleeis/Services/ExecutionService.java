@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ExecutionService {
@@ -27,9 +24,15 @@ public class ExecutionService {
         this.batchJobExecutionRepository = batchJobExecutionRepository;
     }
 
-    public Page<ResponseModel> getBatchJobData( String jobName, int page, int size) {
+    public Page<ResponseModel> getBatchJobData(String jobName, String status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return batchJobExecutionRepository.getBatchJobData(jobName, pageable);
+        List<String> statusList;
+        if (status.equals("all")) {
+            statusList = Arrays.asList("completed", "failed", "running");
+        } else {
+            statusList = Collections.singletonList(status);
+        }
+        return batchJobExecutionRepository.getBatchJobData(jobName, statusList, pageable);
     }
 
     public Optional<List<ResponseModel>> getBatchByDate(String jobName, String date) {
@@ -48,7 +51,6 @@ public class ExecutionService {
         LocalDate today = LocalDate.now();
         return batchJobExecutionRepository.getLatestCoreBatchJobData(date);
     }
-
 
 
     @Transactional
@@ -74,12 +76,16 @@ public class ExecutionService {
         return "Already Running";
     }
 
-    public PageResponseModel getBatchJobDataByPagination(String jobName, int page, int size) {
+    public PageResponseModel getBatchJobDataByPagination(String jobName,String status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ResponseModel> pageResponse = batchJobExecutionRepository.getBatchJobData(jobName, pageable);
+        List<String> statusList;
+        if (status.equals("all")) {
+            statusList = Arrays.asList("completed", "failed", "running");
+        } else {
+            statusList = Collections.singletonList(status);
+        }
+        Page<ResponseModel> pageResponse = batchJobExecutionRepository.getBatchJobData(jobName,statusList, pageable);
         return new PageResponseModel(pageResponse.getContent(), pageResponse.getNumber(), pageResponse.getSize(),
                 pageResponse.getTotalPages(), pageResponse.getTotalElements());
     }
-
-
 }

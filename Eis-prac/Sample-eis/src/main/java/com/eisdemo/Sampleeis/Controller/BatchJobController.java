@@ -50,13 +50,12 @@ public class BatchJobController {
     }
 
 
-    @GetMapping("pagination")
+    @GetMapping("pagination/{status}")
     public ResponseEntity<PageResponseModel> getBatchJobDataByPagination(@RequestParam String jobName,
+                                                                         @PathVariable String status,
                                                                          @RequestParam(defaultValue = "0") int page,
                                                                          @RequestParam(defaultValue = "7") int size) {
-        PageResponseModel pageResponse = executionService.getBatchJobDataByPagination(jobName, page, size);
+        PageResponseModel pageResponse = executionService.getBatchJobDataByPagination(jobName, status,page, size);
         return ResponseEntity.ok(pageResponse);
     }
-
-
 }

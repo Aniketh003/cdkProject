@@ -18,8 +18,10 @@ public interface BatchJobExecutionRepository extends JpaRepository<BatchJobExecu
             "FROM BatchJobExecution e " +
             "INNER JOIN BatchJobInstance i ON e.Job_Instance_Id = i.JOB_INSTANCE_ID " +
             "WHERE i.JOB_NAME = :jobName " +
+            "AND e.Status IN (:status) "+
             "ORDER BY e.Start_Time DESC")
-    Page<ResponseModel> getBatchJobData(@Param("jobName") String jobName, Pageable pageable);
+    Page<ResponseModel> getBatchJobData(@Param("jobName") String jobName, @Param("status") List<String> status, Pageable pageable);
+
 
     @Query("SELECT new com.eisdemo.Sampleeis.models.ResponseModel(i.JOB_NAME, e.Start_Time, e.End_Time, e.Status, e.Exit_Code, e.Exit_Message) " +
             "FROM BatchJobExecution e " +
@@ -43,7 +45,4 @@ public interface BatchJobExecutionRepository extends JpaRepository<BatchJobExecu
     List<ResponseModel> getLatestCoreBatchJobData(@Param("today") LocalDate yesterday);
     @Query("SELECT e FROM BatchJobExecution e WHERE e.Job_Execution_Id = :exeId")
     BatchJobExecution findJobByExecutionId(@Param("exeId") String exeId);
-
-
-
 }
