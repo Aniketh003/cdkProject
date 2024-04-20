@@ -23,7 +23,6 @@ public class BatchJobController {
         this.executionService = executionService;
     }
 
-
     @GetMapping("/getJob")
     public ResponseEntity<Optional<List<ResponseModel>>> getBatchJobData(@RequestParam String jobName, @RequestParam String date) {
         Optional<List<ResponseModel>> data = executionService.getBatchByDate(jobName,date);
